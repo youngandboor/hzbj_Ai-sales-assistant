@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户中心 - 二手房智能销售网站</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+        :root {
+            --primary-color: #3a86ff;
+            --secondary-color: #8338ec;
+            --accent-color: #ff006e;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+            --gradient-primary: linear-gradient(135deg, #3a86ff, #8338ec);
+            --gradient-secondary: linear-gradient(135deg, #ff006e, #fb5607);
+        }
+        
+        body {
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            color: var(--dark-color);
+            background-color: #f5f7fa;
+        }
+        
+        .navbar {
+            background: var(--gradient-primary);
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        
+        .btn-primary {
+            background: var(--gradient-primary);
+            border: none;
+            box-shadow: 0 4px 15px rgba(58, 134, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(58, 134, 255, 0.4);
+        }
+        
+        .btn-secondary {
+            background: var(--gradient-secondary);
+            border: none;
+            box-shadow: 0 4px 15px rgba(255, 0, 110, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 0, 110, 0.4);
+        }
+        
+        .card {
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            border: none;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card-img-top {
+            height: 200px;
+            object-fit: cover;
+        }
+        
+        .feature-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            background: var(--gradient-primary);
+            color: white;
+            font-size: 1.5rem;
+        }
+        
+        .section-title {
+            position: relative;
+            margin-bottom: 3rem;
+            font-weight: 700;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 50px;
+            height: 4px;
+            background: var(--gradient-primary);
+            border-radius: 2px;
+        }
+        
+        .property-features span {
+            background-color: rgba(58, 134, 255, 0.1);
+            color: var(--primary-color);
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+            display: inline-block;
+        }
+        
+        .price-tag {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-weight: 700;
+            display: inline-block;
+        }
+        
+        .user-profile {
+            text-align: center;
+            padding: 2rem;
+        }
+        
+        .user-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin: 0 auto 1rem;
+            border: 4px solid white;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .user-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .nav-pills .nav-link.active {
+            background: var(--gradient-primary);
+        }
+        
+        /* 悬浮客服按钮样式 */
+        .floating-chat-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--gradient-primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+        
+        .floating-chat-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.25);
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="FirstPage.html">智能房产<span class="text-warning">AI</span></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="FirstPage.html">首页</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="FangList.html">房源列表</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="UeserCenter.html">用户中心</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="AI-chat.html">智能客服</a>
+                    </li>
+                </ul>
+                <div class="ms-3">
+                    <button class="btn btn-light rounded-pill px-4" data-bs-toggle="modal" data-bs-target="#loginModal">登录</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 用户中心 -->
+    <section id="user-center" class="page-section bg-light">
+        <div class="container">
+            <h2 class="section-title mb-5 mt-3">用户中心</h2>
+            
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="card sticky-top" style="top: 100px;">
+                        <div class="user-profile">
+                            <div class="user-avatar">
+                                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="用户头像">
+                            </div>
+                            <h5>张先生</h5>
+                            <p class="text-muted">普通会员</p>
+                        </div>
+                        <div class="list-group list-group-flush">
+                            <a href="#profile" class="list-group-item list-group-item-action active" data-bs-toggle="pill">个人资料</a>
+                            <a href="#favorites" class="list-group-item list-group-item-action" data-bs-toggle="pill">我的收藏</a>
+                            <a href="#viewings" class="list-group-item list-group-item-action" data-bs-toggle="pill">看房预约</a>
+                            <a href="#messages" class="list-group-item list-group-item-action" data-bs-toggle="pill">消息中心</a>
+                            <a href="#settings" class="list-group-item list-group-item-action" data-bs-toggle="pill">账户设置</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-9">
+                    <div class="tab-content">
+                        <!-- 个人资料 -->
+                        <div class="tab-pane fade show active" id="profile">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="card-title mb-4">个人资料</h4>
+                                    <form>
+                                        <div class="row mb-3">
+                                            <label class="col-sm-3 col-form-label">用户名</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control" value="zhang_user">
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <label class="col-sm-3 col-form-label">真实姓名</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control" value="张先生">
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <label class="col-sm-3 col-form-label">手机号码</label>
+                                            <div class="col-sm-9">
+                                                <input type="tel" class="form-control" value="138****5678">
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <label class="col-sm-3 col-form-label">电子邮箱</label>
+                                            <div class="col-sm-9">
+                                                <input type="email" class="form-control" value="zhang@example.com">
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <label class="col-sm-3 col-form-label">购房意向</label>
+                                            <div class="col-sm-9">
+                                                <select class="form-select">
+                                                    <option>刚需</option>
+                                                    <option selected>改善</option>
+                                                    <option>投资</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <label class="col-sm-3 col-form-label">意向区域</label>
+                                            <div class="col-sm-9">
+                                                <select class="form-select">
+                                                    <option>不限</option>
+                                                    <option selected>朝阳区</option>
+                                                    <option>海淀区</option>
+                                                    <option>西城区</option>
+                                                    <option>东城区</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-9 offset-sm-3">
+                                                <button type="submit" class="btn btn-primary rounded-pill">保存修改</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 我的收藏 -->
+                        <div class="tab-pane fade" id="favorites">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="card-title mb-4">我的收藏</h4>
+                                    <div class="row g-4">
+                                        <div class="col-md-6">
+                                            <div class="card">
+                                                <div class="position-relative">
+                                                    <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" class="card-img-top" alt="现代公寓">
+                                                    <span class="badge-vr position-absolute top-0 end-0 m-3">VR看房</span>
+                                                </div>
+                                                <div class="card-body">
+                                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                                        <h5 class="card-title mb-0">现代简约三居室</h5>
+                                                        <span class="price-tag">¥380万</span>
+                                                    </div>
+                                                    <p class="card-text text-muted">朝阳区 · 三里屯</p>
+                                                    <div class="property-features mb-3">
+                                                        <span>120㎡</span>
+                                                        <span>3室2厅</span>
+                                                        <span>南北通透</span>
+                                                    </div>
+                                                    <div class="d-flex gap-2">
+                                                        <a href="#property-detail" class="btn btn-outline-primary rounded-pill flex-grow-1">查看详情</a>
+                                                        <button class="btn btn-outline-danger rounded-circle"><i class="bi bi-trash"></i></button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="card">
+                                                <div class="position-relative">
+                                                    <img src="https://images.unsplash.com/photo-1493809842364-78817add7ffb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" class="card-img-top" alt="豪华公寓">
+                                                    <span class="badge-ai position-absolute top-0 end-0 m-3">AI推荐</span>
+                                                </div>
+                                                <div class="card-body">
+                                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                                        <h5 class="card-title mb-0">豪华江景两居室</h5>
+                                                        <span class="price-tag">¥450万</span>
+                                                    </div>
+                                                    <p class="card-text text-muted">浦东新区 · 陆家嘴</p>
+                                                    <div class="property-features mb-3">
+                                                        <span>89㎡</span>
+                                                        <span>2室2厅</span>
+                                                        <span>江景房</span>
+                                                    </div>
+                                                    <div class="d-flex gap-2">
+                                                        <a href="#property-detail" class="btn btn-outline-primary rounded-pill flex-grow-1">查看详情</a>
+                                                        <button class="btn btn-outline-danger rounded-circle"><i class="bi bi-trash"></i></button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 看房预约 -->
+                        <div class="tab-pane fade" id="viewings">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="card-title mb-4">看房预约</h4>
+                                    <div class="table-responsive">
+                                        <table class="table table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>房源信息</th>
+                                                    <th>预约时间</th>
+                                                    <th>状态</th>
+                                                    <th>操作</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>现代简约三居室 - 朝阳区三里屯</td>
+                                                    <td>2023-06-15 上午</td>
+                                                    <td><span class="badge bg-success">已确认</span></td>
+                                                    <td>
+                                                        <button class="btn btn-sm btn-outline-primary rounded-pill">查看详情</button>
+                                                        <button class="btn btn-sm btn-outline-danger rounded-pill">取消预约</button>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>豪华江景两居室 - 浦东新区陆家嘴</td>
+                                                    <td>2023-06-18 下午</td>
+                                                    <td><span class="badge bg-warning text-dark">待确认</span></td>
+                                                    <td>
+                                                        <button class="btn btn-sm btn-outline-primary rounded-pill">查看详情</button>
+                                                        <button class="btn btn-sm btn-outline-danger rounded-pill">取消预约</button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="tab-pane fade" id="messages">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="card-title mb-4">消息中心</h4>
+                                    <ul class="list-group">
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <h6 class="mb-1">新房源推荐</h6>
+                                                <p class="text-muted mb-0 small">根据您的浏览记录，为您推荐5套新上架房源。</p>
+                                                <small class="text-muted">2023-06-10 11:45</small>
+                                            </div>
+                                            <button class="btn btn-sm btn-outline-primary rounded-pill">查看详情</button>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <h6 class="mb-1">看房预约确认</h6>
+                                                <p class="text-muted mb-0 small">您预约的三里屯北小区看房已确认，时间为2023-06-15上午。</p>
+                                                <small class="text-muted">2023-06-12 09:30</small>
+                                            </div>
+                                            <button class="btn btn-sm btn-outline-primary rounded-pill">查看详情</button>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <h6 class="mb-1">价格变动提醒</h6>
+                                                <p class="text-muted mb-0 small">您关注的工体西路小区房源价格已下调5万元。</p>
+                                                <small class="text-muted">2023-06-08 16:20</small>
+                                            </div>
+                                            <button class="btn btn-sm btn-outline-primary rounded-pill">查看详情</button>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 账户设置 -->
+                        <div class="tab-pane fade" id="settings">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="card-title mb-4">账户设置</h4>
+                                    <form>
+                                        <div class="mb-3">
+                                            <label class="form-label">修改密码</label>
+                                            <input type="password" class="form-control" placeholder="当前密码">
+                                        </div>
+                                        <div class="mb-3">
+                                            <input type="password" class="form-control" placeholder="新密码">
+                                        </div>
+                                        <div class="mb-3">
+                                            <input type="password" class="form-control" placeholder="确认新密码">
+                                        </div>
+                                        <button type="submit" class="btn btn-primary rounded-pill">更新密码</button>
+                                    </form>
+                                    
+                                    <hr class="my-4">
+                                    
+                                    <h5 class="mb-3">隐私设置</h5>
+                                    <div class="form-check form-switch mb-3">
+                                        <input class="form-check-input" type="checkbox" id="privacy1" checked>
+                                        <label class="form-check-label" for="privacy1">允许系统根据我的浏览记录推荐房源</label>
+                                    </div>
+                                    <div class="form-check form-switch mb-3">
+                                        <input class="form-check-input" type="checkbox" id="privacy2" checked>
+                                        <label class="form-check-label" for="privacy2">接收价格变动提醒</label>
+                                    </div>
+                                    <div class="form-check form-switch mb-3">
+                                        <input class="form-check-input" type="checkbox" id="privacy3">
+                                        <label class="form-check-label" for="privacy3">接收营销信息</label>
+                                    </div>
+                                    
+                                    <button type="submit" class="btn btn-primary rounded-pill">保存设置</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 悬浮客服按钮 -->
+    <a href="AI-chat.html" class="floating-chat-btn">
+        <i class="bi bi-chat-dots"></i>
+    </a>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+    
