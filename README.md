@@ -1,6 +1,6 @@
-# AI 房产销售助手
+# AI 房产销售助手网站
 
-一个基于 Django 和 Vue.js 的智能房产销售助手系统，提供房源管理、智能对话等功能。
+一个Devbox上开发，部署在Sealos上的基于 Django 和 Vue.js 的智能房产销售助手系统，提供房源展示、智能对话等功能。
 
 ## 功能特点
 
@@ -70,10 +70,6 @@ npm install
 ```bash
 npm run dev
 ```
-
-## API 文档
-
-API 文档位于 `backend/properties/房产api.md`
 
 ## 贡献指南
 
