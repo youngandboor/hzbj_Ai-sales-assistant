@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>房源列表 - 二手房智能销售网站</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+        :root {
+            --primary-color: #3a86ff;
+            --secondary-color: #8338ec;
+            --accent-color: #ff006e;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+            --gradient-primary: linear-gradient(135deg, #3a86ff, #8338ec);
+            --gradient-secondary: linear-gradient(135deg, #ff006e, #fb5607);
+        }
+        
+        body {
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            color: var(--dark-color);
+            background-color: #f5f7fa;
+        }
+        
+        .navbar {
+            background: var(--gradient-primary);
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        
+        .btn-primary {
+            background: var(--gradient-primary);
+            border: none;
+            box-shadow: 0 4px 15px rgba(58, 134, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(58, 134, 255, 0.4);
+        }
+        
+        .btn-secondary {
+            background: var(--gradient-secondary);
+            border: none;
+            box-shadow: 0 4px 15px rgba(255, 0, 110, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 0, 110, 0.4);
+        }
+        
+        .card {
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            border: none;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card-img-top {
+            height: 200px;
+            object-fit: cover;
+        }
+        
+        .feature-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            background: var(--gradient-primary);
+            color: white;
+            font-size: 1.5rem;
+        }
+        
+        .search-bar {
+            border-radius: 50px;
+            padding: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            background: white;
+        }
+        
+        .hero-section {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 5rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1073&q=80');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.2;
+            z-index: 0;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .section-title {
+            position: relative;
+            margin-bottom: 3rem;
+            font-weight: 700;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 50px;
+            height: 4px;
+            background: var(--gradient-primary);
+            border-radius: 2px;
+        }
+        
+        .property-features span {
+            background-color: rgba(58, 134, 255, 0.1);
+            color: var(--primary-color);
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+            display: inline-block;
+        }
+        
+        .price-tag {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-weight: 700;
+            display: inline-block;
+        }
+        
+        .chat-container {
+            height: 500px;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .chat-header {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .chat-messages {
+            flex-grow: 1;
+            padding: 1rem;
+            overflow-y: auto;
+            background-color: #f8f9fa;
+        }
+        
+        .message {
+            margin-bottom: 1rem;
+            max-width: 80%;
+        }
+        
+        .message-content {
+            padding: 0.75rem 1rem;
+            border-radius: 16px;
+        }
+        
+        .user-message {
+            margin-left: auto;
+        }
+        
+        .user-message .message-content {
+            background: var(--gradient-primary);
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+        
+        .bot-message .message-content {
+            background: white;
+            border-bottom-left-radius: 4px;
+        }
+        
+        .chat-input {
+            padding: 1rem;
+            background-color: white;
+            display: flex;
+            align-items: center;
+        }
+        
+        .chat-input input {
+            flex-grow: 1;
+            border: none;
+            padding: 0.75rem 1rem;
+            border-radius: 50px;
+            background-color: #f1f3f5;
+            margin-right: 0.5rem;
+        }
+        
+        .chat-input button {
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+        }
+        
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-right: 1rem;
+        }
+        
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .filter-card {
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            background: white;
+            margin-bottom: 2rem;
+        }
+        
+        .range-slider {
+            height: 5px;
+            position: relative;
+            background-color: #e1e9f8;
+            border-radius: 2px;
+        }
+        
+        .range-selected {
+            height: 100%;
+            position: absolute;
+            border-radius: 2px;
+            background: var(--gradient-primary);
+        }
+        
+        .range-input {
+            position: relative;
+        }
+        
+        .range-input input {
+            position: absolute;
+            width: 100%;
+            height: 5px;
+            top: -5px;
+            background: none;
+            pointer-events: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+        }
+        
+        .range-input input::-webkit-slider-thumb {
+            height: 20px;
+            width: 20px;
+            border-radius: 50%;
+            border: 3px solid white;
+            background: var(--primary-color);
+            pointer-events: auto;
+            -webkit-appearance: none;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .range-input input::-moz-range-thumb {
+            height: 20px;
+            width: 20px;
+            border-radius: 50%;
+            border: 3px solid white;
+            background: var(--primary-color);
+            pointer-events: auto;
+            -moz-appearance: none;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .user-profile {
+            text-align: center;
+            padding: 2rem;
+        }
+        
+        .user-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin: 0 auto 1rem;
+            border: 4px solid white;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .user-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .nav-pills .nav-link.active {
+            background: var(--gradient-primary);
+        }
+        
+        .property-gallery {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            grid-template-rows: 300px 150px;
+            gap: 10px;
+            margin-bottom: 2rem;
+        }
+        
+        .gallery-main {
+            grid-row: 1 / 2;
+            grid-column: 1 / 2;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+        
+        .gallery-side-1 {
+            grid-row: 1 / 2;
+            grid-column: 2 / 3;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+        
+        .gallery-side-2 {
+            grid-row: 2 / 3;
+            grid-column: 1 / 2;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+        
+        .gallery-side-3 {
+            grid-row: 2 / 3;
+            grid-column: 2 / 3;
+            border-radius: 16px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .gallery-more {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        
+        .gallery-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .property-info-card {
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+        }
+        
+        .property-info-header {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 1.5rem;
+        }
+        
+        .property-info-body {
+            padding: 1.5rem;
+            background: white;
+        }
+        
+        .property-info-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .property-info-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(58, 134, 255, 0.1);
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            font-size: 1.25rem;
+        }
+        
+        .agent-card {
+            display: flex;
+            align-items: center;
+            padding: 1.5rem;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="FirstPage.html">智能房产<span class="text-warning">AI</span></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="FirstPage.html">首页</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="FangList.html">房源列表</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="UeserCenter.html">用户中心</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="AI-chat.html">智能客服</a>
+                    </li>
+                </ul>
+                <div class="ms-3">
+                    <button class="btn btn-light rounded-pill px-4" data-bs-toggle="modal" data-bs-target="#loginModal">登录</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 房源列表页 -->
+    <section id="listings" class="page-section bg-light pt-3">
+        <div class="container">
+            <h2 class="section-title mb-5">房源列表</h2>
+            
+            <div class="row">
+                <!-- 筛选区域 -->
+                <div class="col-lg-3">
+                    <div class="filter-card sticky-top" style="top: 100px;">
+                        <h5 class="mb-4">筛选条件</h5>
+                        
+                        <div class="mb-4">
+                            <label class="form-label">价格区间</label>
+                            <div class="range-slider mb-2">
+                                <div class="range-selected" style="left: 20%; right: 30%;"></div>
+                            </div>
+                            <div class="range-input">
+                                <input type="range" min="0" max="1000" value="200" step="10">
+                                <input type="range" min="0" max="1000" value="700" step="10">
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <span>100万</span>
+                                <span>1000万</span>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label class="form-label">户型</label>
+                            <div class="d-flex flex-wrap gap-2">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="type1">
+                                    <label class="form-check-label" for="type1">一室</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="type2">
+                                    <label class="form-check-label" for="type2">二室</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="type3">
+                                    <label class="form-check-label" for="type3">三室</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="type4">
+                                    <label class="form-check-label" for="type4">四室及以上</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label class="form-label">面积</label>
+                            <div class="range-slider mb-2">
+                                <div class="range-selected" style="left: 10%; right: 40%;"></div>
+                            </div>
+                            <div class="range-input">
+                                <input type="range" min="0" max="300" value="30" step="5">
+                                <input type="range" min="0" max="300" value="180" step="5">
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <span>0㎡</span>
+                                <span>300㎡</span>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label class="form-label">特色</label>
+                            <div class="d-flex flex-wrap gap-2">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="feature1">
+                                    <label class="form-check-label" for="feature1">南北通透</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="feature2">
+                                    <label class="form-check-label" for="feature2">电梯房</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="feature3">
+                                    <label class="form-check-label" for="feature3">近地铁</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="feature4">
+                                    <label class="form-check-label" for="feature4">学区房</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="feature5">
+                                    <label class="form-check-label" for="feature5">精装修</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="d-grid">
+                            <button class="btn btn-primary rounded-pill">应用筛选</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 房源列表 -->
+                <div class="col-lg-9">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <div>
+                            <span class="text-muted">共找到 <strong>256</strong> 套房源</span>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <span class="me-2">排序：</span>
+                            <select class="form-select form-select-sm" style="width: auto;">
+                                <option selected>默认排序</option>
+                                <option>价格从低到高</option>
+                                <option>价格从高到低</option>
+                                <option>面积从大到小</option>
+                                <option>最新发布</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="row g-4">
+                        <!-- 房源卡片 -->
+                        <div class="col-md-6 col-lg-4">
+                            <div class="card">
+                                <div class="position-relative">
+                                    <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" class="card-img-top" alt="现代公寓">
+                                    <span class="badge-vr position-absolute top-0 end-0 m-3">VR看房</span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <h5 class="card-title mb-0">现代简约三居室</h5>
+                                        <span class="price-tag">¥380万</span>
+                                    </div>
+                                    <p class="card-text text-muted">朝阳区 · 三里屯</p>
+                                    <div class="property-features mb-3">
+                                        <span>120㎡</span>
+                                        <span>3室2厅</span>
+                                        <span>南北通透</span>
+                                    </div>
+                                    <div class="d-grid">
+                                        <a href="#property-detail" class="btn btn-outline-primary rounded-pill">查看详情</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6 col-lg-4">
+                            <div class="card">
+                                <div class="position-relative">
+                                    <img src="https://images.unsplash.com/photo-1493809842364-78817add7ffb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" class="card-img-top" alt="豪华公寓">
+                                    <span class="badge-ai position-absolute top-0 end-0 m-3">AI推荐</span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <h5 class="card-title mb-0">豪华江景两居室</h5>
+                                        <span class="price-tag">¥450万</span>
+                                    </div>
+                                    <p class="card-text text-muted">浦东新区 · 陆家嘴</p>
+                                    <div class="property-features mb-3">
+                                        <span>89㎡</span>
+                                        <span>2室2厅</span>
+                                        <span>江景房</span>
+                                    </div>
+                                    <div class="d-grid">
+                                        <a href="#property-detail" class="btn btn-outline-primary rounded-pill">查看详情</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6 col-lg-4">
+                            <div class="card">
+                                <div class="position-relative">
+                                    <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" class="card-img-top" alt="花园洋房">
+                                    <span class="badge-vr position-absolute top-0 end-0 m-3">VR看房</span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <h5 class="card-title mb-0">花园洋房四居室</h5>
+                                        <span class="price-tag">¥680万</span>
+                                    </div>
+                                    <p class="card-text text-muted">海淀区 · 中关村</p>
+                                    <div class="property-features mb-3">
+                                        <span>180㎡</span>
+                                        <span>4室2厅</span>
+                                        <span>花园</span>
+                                    </div>
+                                    <div class="d-grid">
+                                        <a href="#property-detail" class="btn btn-outline-primary rounded-pill">查看详情</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6 col-lg-4">
+                            <div class="card">
+                                <div class="position-relative">
+                                    <img src="https://images.unsplash.com/photo-1484154218962-a197022b5858?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1174&q=80" class="card-img-top" alt="复式公寓">
+                                    <span class="badge-ai position-absolute top-0 end-0 m-3">AI推荐</span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <h5 class="card-title mb-0">复式loft公寓</h5>
+                                        <span class="price-tag">¥320万</span>
+                                    </div>
+                                    <p class="card-text text-muted">静安区 · 南京西路</p>
+                                    <div class="property-features mb-3">
+                                        <span>78㎡</span>
+                                        <span>1室2厅</span>
+                                        <span>复式</span>
+                                    </div>
+                                    <div class="d-grid">
+                                        <a href="#property-detail" class="btn btn-outline-primary rounded-pill">查看详情</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6 col-lg-4">
+                            <div class="card">
+                                <div class="position-relative">
+                                    <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" class="card-img-top" alt="精装两居">
+                                    <span class="badge-vr position-absolute top-0 end-0 m-3">VR看房</span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <h5 class="card-title mb-0">精装两居室</h5>
+                                        <span class="price-tag">¥280万</span>
+                                    </div>
+                                    <p class="card-text text-muted">西城区 · 西单</p>
+                                    <div class="property-features mb-3">
+                                        <span>85㎡</span>
+                                        <span>2室1厅</span>
+                                        <span>精装修</span>
+                                    </div>
+                                    <div class="d-grid">
+                                        <a href="#property-detail" class="btn btn-outline-primary rounded-pill">查看详情</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6 col-lg-4">
+                            <div class="card">
+                                <div class="position-relative">
+                                    <img src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1080&q=80" class="card-img-top" alt="学区房">
+                                    <span class="badge-ai position-absolute top-0 end-0 m-3">AI推荐</span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <h5 class="card-title mb-0">学区房三居室</h5>
+                                        <span class="price-tag">¥520万</span>
+                                    </div>
+                                    <p class="card-text text-muted">东城区 · 东直门</p>
+                                    <div class="property-features mb-3">
+                                        <span>110㎡</span>
+                                        <span>3室1厅</span>
+                                        <span>学区房</span>
+                                    </div>
+                                    <div class="d-grid">
+                                        <a href="#property-detail" class="btn btn-outline-primary rounded-pill">查看详情</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 分页 -->
+                    <nav class="mt-5">
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">上一页</a>
+                            </li>
+                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item">
+                                <a class="page-link" href="#">下一页</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 悬浮客服按钮 -->
+    <a href="AI-chat.html" class="floating-chat-btn">
+        <i class="bi bi-chat-dots"></i>
+    </a>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+                   

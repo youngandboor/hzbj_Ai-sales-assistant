@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}AI智能助手{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <!-- 使用新的聊天界面 -->
+            {% include 'chat/chat_fixed.html' %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<!-- 添加悬浮客服按钮 -->
+{% include 'chat/chat_float.html' %}
+{% endblock %}
